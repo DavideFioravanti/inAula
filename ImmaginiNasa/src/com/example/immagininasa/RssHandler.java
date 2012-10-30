@@ -6,12 +6,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 
@@ -26,9 +35,58 @@ public class RssHandler extends DefaultHandler  {
 	boolean inItem = false;
 	boolean inEnclosure = false;
 	String imageUrl=null;
+	static Bitmap bitmap_ret;
+	
+	
+	
+	private class DownloadImg extends AsyncTask {
+   	 
+        @Override
+        protected void onPostExecute(Object params) {
+        	//RssHandler.bitmap_ret=(Bitmap) params;
+       }
+        @Override
+        protected Bitmap doInBackground(Object... params) {
+        	
+			
+        	HttpURLConnection connection;
+    		try {
+    			connection = (HttpURLConnection) new URL(imageUrl).openConnection();
+
+    			connection.setDoInput(true);
+    			connection.connect();
+    			InputStream is = connection.getInputStream();
+    			Bitmap bitmap =BitmapFactory.decodeStream(is);
+    			
+    			is.close();
+    			RssHandler.bitmap_ret = bitmap;
+    			return bitmap;
+
+     			
+     		} catch (MalformedURLException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		} catch (IOException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		}
+			return null;
+        }
+
+
+
+ 
+    }
+	
+	
 	
 	public Bitmap getImage(){
-		HttpURLConnection connection;
+		
+		//new DownloadImg().execute();
+		
+		//return bitmap_ret;
+
+    	HttpURLConnection connection;
 		try {
 			connection = (HttpURLConnection) new URL(imageUrl).openConnection();
 
@@ -36,19 +94,21 @@ public class RssHandler extends DefaultHandler  {
 			connection.connect();
 			InputStream is = connection.getInputStream();
 			Bitmap bitmap =BitmapFactory.decodeStream(is);
+			
 			is.close();
-			return bitmap;
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+			return bitmap;
+
+ 			
+ 		} catch (MalformedURLException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		} catch (IOException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
 		
-		
-return null;
+		return null;
 	}
 	
 	

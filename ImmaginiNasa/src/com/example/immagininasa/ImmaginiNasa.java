@@ -78,6 +78,67 @@ public class ImmaginiNasa extends Activity {
  
     
 
+    
+
+    private class Downloader extends AsyncTask<String, Void, RssHandler> {
+    	 
+        @Override
+        protected void onPostExecute(RssHandler arg0) {
+
+ 			TextView tv = (TextView) findViewById(R.id.titolo);
+ 			tv.setText(arg0.title);
+ 			ImageView iv = (ImageView) findViewById(R.id.imageView1);
+ 			iv.setImageBitmap(pic);
+ 			System.out.print("CIAO");
+       }
+         Bitmap pic;
+        
+        @Override
+        protected RssHandler doInBackground(String... arg0) {
+        	for (int i = 0; i < arg0.length; i++) {
+				
+			
+        	String url =arg0[i];//.toString();
+
+     		try {
+     			SAXParserFactory factory = SAXParserFactory.newInstance(); 
+     			SAXParser parser = factory.newSAXParser();
+     			InputStream in = new URL (url).openStream(); //Se non esiste il file crea una eccezione
+
+
+     			RssHandler handler=new RssHandler();
+     			XMLReader reader = parser.getXMLReader();
+     			reader.setContentHandler(handler);
+     			reader.parse(new InputSource(in));//Questo è il momento in cui scarica veramente e legge il file
+
+     			pic= handler.getImage();
+     			return handler;
+     			
+     		} catch (MalformedURLException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		} catch (IOException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		} catch (ParserConfigurationException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		} catch (SAXException e) {
+     			// TODO Auto-generated catch block
+     			e.printStackTrace();
+     		}
+			return null;
+        }
+			return null;
+        }
+        
+
+ 
+    }
+ 
+    
+
+    
 
 
     @Override
@@ -85,7 +146,10 @@ public class ImmaginiNasa extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_immagini_nasa);
         
-        new Connection().execute();
+        //new Connection().execute();
+        new Downloader().execute("http://www.nasa.gov/rss/image_of_the_day.rss");
+        
+
     
     }
     

@@ -1,0 +1,48 @@
+package com.example.dragimageview;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+public class DragImageView extends Activity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_drag_image_view);
+	
+	
+		RelativeLayout rl = (RelativeLayout) findViewById(R.id.)
+		ImageView iv = (ImageView) findViewById(R.id.imageView1);
+		RelativeLayout.LayoutParams params = 
+				new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.setMargins(100, 100, 0, 0);
+		iv.setLayoutParams(params);
+		
+		
+		iv.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// TODO Auto-generated method stub
+				
+				return false;
+			}
+		});
+		
+	
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_drag_image_view, menu);
+		return true;
+	}
+
+}

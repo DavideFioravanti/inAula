@@ -19,4 +19,9 @@
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory"/>
 <fullyQualifiedTypeName name="android.graphics.BitmapFactory.Options"/>
 <fullyQualifiedTypeName name="android.view.MotionEvent"/>
+<fullyQualifiedTypeName name="java.util.Enumeration"/>
+<fullyQualifiedTypeName name="com.google.appengine.api.datastore.Entity"/>
+<fullyQualifiedTypeName name="com.google.appengine.api.datastore.DatastoreService"/>
+<fullyQualifiedTypeName name="com.google.appengine.api.datastore.DatastoreServiceFactory"/>
+<fullyQualifiedTypeName name="java.lang.Integer"/>
 </qualifiedTypeNameHistroy>

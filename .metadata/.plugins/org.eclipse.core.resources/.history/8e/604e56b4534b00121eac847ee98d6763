@@ -1,0 +1,14 @@
+import javax.servlet.http.HttpServlet;
+
+
+public class SalvaDato extends HttpServlet {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

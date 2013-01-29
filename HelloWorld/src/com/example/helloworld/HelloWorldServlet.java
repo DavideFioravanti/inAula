@@ -2,9 +2,19 @@ package com.example.helloworld;
 
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
 
 @SuppressWarnings("serial")
 public class HelloWorldServlet extends HttpServlet {
@@ -29,6 +39,16 @@ public class HelloWorldServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		//Analogamente al system.out tramite getwriter possiamo scrivere
 		resp.getWriter().println("Hello, world");
+		
+		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+		Query q = new Query("Persona");
+		PreparedQuery qp= ds.prepare(q);
+		List <Entity> result = qp.asList(FetchOptions.Builder.withDefaults()) ;
+		for (Entity entity : result) {
+			System.out.println("Key: "+ entity.getKey()+" Kind: "+ entity.getKind()+ " Età: "+entity.getProperty("eta"));
+		
+		}
+		
 	}
 	
 	

@@ -1,0 +1,107 @@
+package pdm.test.sensori;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Servlet implementation class ListaMisure
+ */
+@WebServlet("/misure")
+public class ListaMisure extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ListaMisure() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    private Connection conn = null;
+	/**
+	 * @see Servlet#init(ServletConfig)
+	 */
+	public void init(ServletConfig config) throws ServletException {
+		// TODO Auto-generated method stub
+		
+		String url = "jdbc:mysql://localhost:3306/";
+		String dbName = "sensori";
+		String userName = "sensori";
+		String password = "sensori";
+		String driver = "com.mysql.jdbc.Driver";
+		
+		try {
+			Class.forName(driver).newInstance();
+			conn = DriverManager.getConnection(url + dbName, userName, password);
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		super.destroy();
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		Statement stm;
+		try {
+			stm = conn.createStatement();
+
+
+
+			
+
+		String sql2 = "SELECT * FROM misure WHERE id_sensore="+request.getParameter("id");
+		ResultSet rs2 = stm.executeQuery(sql2);
+
+		JSONArray arr2 = new JSONArray();
+	
+		
+		while (rs2.next()) {
+			JSONObject obj = new JSONObject();
+			
+			obj.put("valore", rs2.getDouble("valore")).put("data", rs2.getString("data"));
+			
+			
+			arr2.put(obj);
+	
+		}
+		response.getWriter().println(arr2.toString());
+		} catch (SQLException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}
